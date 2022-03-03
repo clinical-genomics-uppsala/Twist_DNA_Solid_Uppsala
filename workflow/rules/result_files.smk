@@ -15,6 +15,15 @@ rule copy_bam:
         "cp {input} {output}"
 
 
+rule copy_bai:
+    input:
+        "alignment/merge_bam/{sample}_{type}.bam.bai",
+    output:
+        "results/dna/bam/{sample}_{type}.bam.bai",
+    shell:
+        "cp {input} {output}"
+
+
 rule copy_caller_vcf:
     input:
         "snv_indels/{caller}/{sample}_{type}.merged.vcf.gz",
@@ -60,6 +69,24 @@ rule copy_filtered_vcf:
         "cp {input} {output}"
 
 
+rule copy_bcftools_regionfilter1:
+    input:
+        "filtering/add_multi_snv_in_codon/{sample}_{type}.codon_snvs.sorted.include.nocnv.vcf.gz",
+    output:
+        "results/dna/vcf/{sample}_{type}.ensembled.vep_annotated.filtered.codon_snvs.nocnv.vcf.gz",
+    shell:
+        "cp {input} {output}"
+
+
+rule copy_bcftools_regionfilter2:
+    input:
+        "filtering/add_multi_snv_in_codon/{sample}_{type}.codon_snvs.sorted.include.exon.vcf.gz",
+    output:
+        "results/dna/vcf/{sample}_{type}.ensembled.vep_annotated.filtered.codon_snvs.exon_only.vcf.gz",
+    shell:
+        "cp {input} {output}"
+
+
 rule copy_fastqc:
     input:
         "qc/fastqc/{sample}_{type}_{read}_fastqc.html",
@@ -87,9 +114,9 @@ rule copy_picard_alignment_summary_metrics:
         "cp {input} {output}"
 
 
-rule copy_picard_hs_metrics:
+rule copy_picard_collect_hs_metrics:
     input:
-        "qc/picard_hs_metrics/{sample}_{type}.HsMetrics.txt",
+        "qc/picard_collect_hs_metrics/{sample}_{type}.HsMetrics.txt",
     output:
         "results/dna/qc/{sample}_{type}.HsMetrics.txt",
     shell:
@@ -110,15 +137,6 @@ rule copy_samtools_stats:
         "qc/samtools_stats/{sample}_{type}.samtools-stats.txt",
     output:
         "results/dna/qc/{sample}_{type}.samtools-stats.txt",
-    shell:
-        "cp {input} {output}"
-
-
-rule copy_hotspot_info:
-    input:
-        "qc/hotspot_info/{sample}_{type}.hotspot_info.tsv",
-    output:
-        "results/dna/hotspot_info/{sample}_{type}.hotspot_info.tsv",
     shell:
         "cp {input} {output}"
 
@@ -159,9 +177,9 @@ rule copy_gene_fuse:
         "cp {input} {output}"
 
 
-rule copy_cnvkit_call_loh:
+rule copy_cnvkit_call:
     input:
-        "cnv_sv/cnvkit_call_loh/{sample}_{type}.loh.cns",
+        "cnv_sv/cnvkit_call/{sample}_{type}.loh.cns",
     output:
         "results/dna/cnv/{sample}_{type}.cnvkit_loh.cns",
     shell:
